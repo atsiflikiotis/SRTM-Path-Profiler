@@ -33,6 +33,14 @@ di: numpy array with distance of the i-th terrain point
 hi: Elevation of the i-th terrain point
 
 
+example:
+```python
+import srtm_path_profiler as srtm
+dist, atr, di, hi = srtm.get_path_profile(38.112, 23.12, 38.8, 23.8)
+srtm.plotpathprofile(di, hi)
+```
+
+
 3. If you want to plot the path after parsing the data:
 ```python
 srtm.plotpathprofile(di, hi, earthcurvature=True)
