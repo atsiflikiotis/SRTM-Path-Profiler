@@ -15,11 +15,13 @@ dist, atrdeg, di, hi = srtm.get_path_profile(phi_t, psi_t, phi_r, psi_r, coord_s
 ```
 
 Input:
+
 phi_t, psi_t, phi_r, psi_r are latitude and longitude coordinates of two points (for example transmitter and receiver),
 
 coord_samples is the number of samples to construct the path, 
 
 fill_missing (optional, default: False): set to True only if you want to fill with 0's all the missing data
+
 
 Returns:
 dist: Distance in km
@@ -37,6 +39,7 @@ srtm.plotpathprofile(di, hi, earthcurvature=True)
 di, hi: see above
 earthcurvature (optional, default: True): set to False to pot path profile on flat Earth
 ```
+
 
 Packages that you'll need:
 numpy
