@@ -33,7 +33,7 @@ di: numpy array with distance of the i-th terrain point
 hi: Elevation of the i-th terrain point
 
 
-3. If you want to plot the path after :
+3. If you want to plot the path after parsing the data:
 ```python
 srtm.plotpathprofile(di, hi, earthcurvature=True)
 di, hi: see above
@@ -41,7 +41,7 @@ earthcurvature (optional, default: True): set to False to pot path profile on fl
 ```
 
 
-Packages that you'll need:
+Packages that you'll need (pip install ...)
 numpy
 sxipy
 matplotlib (for plot only)
