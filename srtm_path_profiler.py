@@ -3,7 +3,7 @@ from pathlib import Path
 from scipy.interpolate import RectBivariateSpline
 import matplotlib.pyplot as plt
 
-# folder name where hgt files are located:
+# folder name where srtmdata files are located:
 hgtfolder = 'srtmdata'
 hgtpath = Path.joinpath(Path.cwd(), hgtfolder)
 x = np.linspace(0, 1, 3601, dtype=np.dtype('float32'))
@@ -25,6 +25,7 @@ def plotpathprofile(di, hi, earthcurvature=True):
         ec = -1000 * (di - di[-1] / 2) ** 2 / (2 * Ro)
         ec -= min(ec)   # set tx and rx to 0, and the middle of path is getting the maximum height.
     h = hi + ec
+    plt.style.use('seaborn')
     plt.plot(di, h, color='grey')
     plt.fill_between(di, h, ec, color='darkgoldenrod', alpha=0.6)
     plt.fill_between(di, ec, 0, color='silver')
@@ -43,7 +44,7 @@ def get_path_profile(phi_t, psi_t, phi_r, psi_r, coord_samples=700, fill_missing
     if not fill_missing:
         if flagsmissing.any():
             missing = np.array2string(ufnames[np.nonzero(flagsmissing)])
-            print('Missing HGT files', f"Missing hgt files and filled with 0 values:\n{missing}")
+            print('Missing HGT files', f"Missing srtmdata files and filled with 0 values:\n{missing}")
     print(f'Distance: {dist:.5f}km\nBearing angle: {atrdeg:.1f}°\nMax elevation:{np.max(hi):.0f}m')
     return dist, atrdeg, di, hi
 
@@ -51,11 +52,11 @@ def get_path_profile(phi_t, psi_t, phi_r, psi_r, coord_samples=700, fill_missing
 def get_elevations(subpaths, ufnames, flagsmissing):
     interpvalues = np.empty(0, dtype=int)
     for i in range(len(subpaths)):
-        # open hgt filename according to subpath
+        # open srtmdata filename according to subpath
         path = Path.joinpath(hgtpath, ufnames[i])
         if not flagsmissing[i]:
             with open(path, 'rb') as data:
-                # data is stored in hgt files in big-endian format:
+                # data is stored in srtmdata files in big-endian format:
                 # SRTM1 (1-arc sampling) is used, so each file contains 3601x3601 individual elevations
                 # after reading all elevatin ins file, we reshape it into a rectangular numpy array
                 elevationdata = np.fromfile(data, np.dtype('>i2'), 3601 ** 2).reshape(3601, 3601)
@@ -74,7 +75,7 @@ def get_elevations(subpaths, ufnames, flagsmissing):
 def get_path_sections(phi_values, psi_values, fill_missing):
     fnames = get_hgt_names(phi_values, psi_values)
 
-    # check if all hgt files exist in hgt directory
+    # check if all srtmdata files exist in srtmdata directory
     _, indices = np.unique(fnames, return_index=True)
     indices = np.sort(indices)
     ufnames = fnames[indices]
@@ -87,10 +88,10 @@ def get_path_sections(phi_values, psi_values, fill_missing):
     if not fill_missing:
         if flagsmissing.any():
             missing = np.array2string(ufnames[np.nonzero(flagsmissing)])
-            print('Missing HGT files', f"Missing hgt files from hgt directory: {missing}")
-            raise MissingHgtError(f"Missing hgt files from hgt directory:\n{missing}")
+            print('Missing HGT files', f"Missing srtmdata files from srtmdata directory: {missing}")
+            raise MissingHgtError(f"Missing srtmdata files from srtmdata directory:\n{missing}")
 
-    # create sub-paths for each difference hgt file:
+    # create sub-paths for each difference srtmdata file:
     subpaths = [None] * len(indices)
     for i in range(len(indices) - 1):
         startidx = indices[i]
