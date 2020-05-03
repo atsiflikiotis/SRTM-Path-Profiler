@@ -18,7 +18,7 @@ Input:
 
 phi_t, psi_t, phi_r, psi_r are latitude and longitude coordinates of two points (for example transmitter and receiver),
 
-coord_samples is the number of samples to construct the path, 
+coord_samples (optiona, default: 700): the number of samples to construct the path (just enough to get ~30m accurace)
 
 fill_missing (optional, default: False): set to True only if you want to fill with 0's all the missing data
 
